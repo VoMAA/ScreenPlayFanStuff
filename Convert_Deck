@@ -1,0 +1,19 @@
+import json
+
+def convert_deck(json_data=None, deck_string=None):
+    if json_data:
+        data = json.loads(json_data)
+        leads = ''.join([lead[0] for lead in data['Leads']])
+        cards = ''.join([card[0] for card in data['Cards']])
+        return f'{leads}_{cards}'
+    elif deck_string:
+        leads, cards = deck_string.split('_')
+        leads = [f'Leader{lead}' for lead in leads]
+        cards = {f'Card{card}': 1 for card in cards}
+        return json.dumps({"Leads": leads, "Cards": cards})
+
+json_data = '{"Author":"ComicoGames", "Format": "Standart", "Leads": ["RichardSpade", "Cybocock", "IlluminatiLizard"], "Cards":{"NoirThinking":4,"Vaxxine":4,"CarnomaniacButcher":3,"Chemtrail":2,"ExtraterrestrialAbduction":2,"VaxxinutDoctor":3,"ProphylacticArmor":5,"SuddenReveal":3,"Vaccinut":4,"LarkKane":4,"FlatEarthTurtle":1,"ChemtrailPilot":2}}'
+deck_string = convert_deck(json_data=json_data)
+print(deck_string)
+json_data = convert_deck(deck_string=deck_string)
+print(json_data)
