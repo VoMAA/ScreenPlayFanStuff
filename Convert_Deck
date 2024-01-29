@@ -1,19 +1,38 @@
 import json
 
 def convert_deck(json_data=None, deck_string=None):
+    # If JSON data is provided, convert it to a string
     if json_data:
         try:
+            # Load the JSON data
             data = json.loads(json_data)
+            
+            # Extract the first letter of each leader's name
             leads = ''.join([lead[0] for lead in data.get('Leads', [])])
+            
+            # Extract the first letter of each card's name
             cards = ''.join([card[0] for card in data.get('Cards', {})])
+            
+            # Return the leads and cards as a single string
             return f'{leads}_{cards}'
         except json.JSONDecodeError:
+            # Handle invalid JSON data
             return "Error: Invalid JSON data"
+    
+    # If a deck string is provided, convert it to JSON
     elif deck_string:
         try:
+            # Split the deck string into leads and cards
             leads, cards = deck_string.split('_')
+            
+            # Convert the leads to a list of placeholder names
             leads = [f'Leader{lead}' for lead in leads]
+            
+            # Convert the cards to a dictionary with placeholder names and counts
             cards = {f'Card{card}': 1 for card in cards}
+            
+            # Return the leads and cards as a JSON string
             return json.dumps({"Leads": leads, "Cards": cards})
         except ValueError:
+            # Handle invalid deck strings
             return "Error: Invalid deck string"
